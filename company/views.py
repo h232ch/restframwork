@@ -31,8 +31,10 @@ def department_api(request, id=0):
             return JsonResponse("Update Successfully", safe=False)
 
     elif request.method == 'DELETE':
-        department_data = JSONParser().parse(request)
-        department = Department.objects.get(department_id=department_data['department_id'])
+        # department_data = JSONParser().parse(request)
+        # department = Department.objects.get(department_id=department_data['department_id'])
+        print(id)
+        department = Department.objects.get(department_id=id)
         department.delete()
         return JsonResponse("Deleted Successfully", safe=False)
 
@@ -62,8 +64,9 @@ def employee_api(request, id=0):
         return JsonResponse("Failed to Update", safe=False)
 
     elif request.method == 'DELETE':
-        employee_data = JSONParser().parse(request)
-        employee = Employee.objects.get(employee_id=employee_data['employee_id'])
+        # employee_data = JSONParser().parse(request)
+        # employee = Employee.objects.get(employee_id=employee_data['employee_id'])
+        employee = Employee.objects.get(employee_id=id)
         employee.delete()
         return JsonResponse("Deleted Successfully", safe=False)
 
