@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from company.models import Department, Employee
-from company.serializers import DepartmentSerializer, EmployeeSerializer
+from company.serializers import DepartmentSerializer, EmployeeSerializer, EmployeeGetSerializer
 from django.core.files.storage import default_storage
 
 
@@ -43,15 +43,17 @@ def department_api(request, id=0):
 def employee_api(request, id=0):
     if request.method == 'GET':
         employees = Employee.objects.all()
-        employees_serializer = EmployeeSerializer(employees, many=True)
+        employees_serializer = EmployeeGetSerializer(employees, many=True)
         return JsonResponse(employees_serializer.data, safe=False)
 
     elif request.method == 'POST':
         employee_data = JSONParser().parse(request)
         employeeSerializer = EmployeeSerializer(data=employee_data)
+
         if employeeSerializer.is_valid():
             employeeSerializer.save()
             return JsonResponse("Added Successfully", safe=False)
+        print(employeeSerializer.errors)
         return JsonResponse("Failed to Add", safe=False)
 
     elif request.method == 'PUT':
